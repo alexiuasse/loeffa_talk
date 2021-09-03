@@ -44,6 +44,45 @@ class SimpleExampleForm(forms.ModelForm):
             )
 
 
+class AdminCrispyExampleForm(forms.ModelForm):
+    prefix = "adminCrispyExampleForm"
+
+    layout = Layout(
+        Field('name'),
+        PrependedText('value', 'R$'),
+        AppendedText('email', '@'),
+        Field('date_time'),
+        Field('father_example'),
+        Field('date'),
+        Field('time'),
+        Field('observation'),
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False  # False to remove <form></form>
+        self.helper.layout = self.layout
+        self.helper.form_class = 'form-control'
+
+    class Meta:
+        model = Example
+        exclude = []
+        widgets = {
+            # 'date': forms.TextInput(attrs={'type': 'date'}),
+            # 'time': forms.TextInput(attrs={'type': 'time'}),
+            'observation': forms.Textarea(attrs={'rows': '3'}),
+        }
+
+    def clean_value(self):
+        value = self.cleaned_data['value']
+        if value is not None and value < 0:
+            raise forms.ValidationError(
+                _("Value must be positive!"),
+                code="invalid"
+            )
+
+
 class CrispyExampleForm(forms.ModelForm):
     prefix = "crispyExampleForm"
 

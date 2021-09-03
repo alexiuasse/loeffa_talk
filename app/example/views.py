@@ -4,12 +4,8 @@ from .forms import CrispyExampleForm, SimpleExampleForm
 
 
 def test_form(request):
-    simple_form = SimpleExampleForm(
-        request.POST or None, prefix="simpleExampleForm"
-    )
-    crispy_form = CrispyExampleForm(
-        request.POST or None, prefix="crispyExampleForm"
-    )
+    simple_form = SimpleExampleForm(request.POST or None)
+    crispy_form = CrispyExampleForm(request.POST or None)
     if request.method == "POST":
         if simple_form.is_valid() and crispy_form.is_valid():
             simple_object = simple_form.save()
