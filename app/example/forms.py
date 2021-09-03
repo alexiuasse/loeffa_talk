@@ -8,6 +8,21 @@ from crispy_forms.bootstrap import PrependedText, AppendedText, FormActions
 from .models import Example
 
 
+class AdminExampleForm(forms.ModelForm):
+
+    class Meta:
+        model = Example
+        exclude = []
+
+    def clean_value(self):
+        value = self.cleaned_data['value']
+        if value is not None and value < 0:
+            raise forms.ValidationError(
+                _("Value must be positive!"),
+                code="invalid"
+            )
+
+
 class SimpleExampleForm(forms.ModelForm):
     prefix = "simpleExampleForm"
 
