@@ -20,5 +20,5 @@ from example.views import test_form
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('test/form/', test_form, name="test-form"),
+    path('', test_form, name="test-form"),
 ]
