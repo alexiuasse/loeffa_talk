@@ -1,8 +1,9 @@
 from django import forms
 from django.utils.translation import gettext as _
 
+from django.forms.models import modelformset_factory
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Row, Field, Fieldset, Submit, Button
+from crispy_forms.layout import Layout, Row, Field, Submit, Button
 from crispy_forms.bootstrap import PrependedText, AppendedText, FormActions
 
 from .models import Example
@@ -126,3 +127,27 @@ class CrispyExampleForm(forms.ModelForm):
                 _("Value must be positive!"),
                 code="invalid"
             )
+
+
+CrispyExampleFormset = modelformset_factory(Example, extra=0, exclude=[])
+
+
+class CrispyExampleFormsetHelper(FormHelper):
+
+    layout = Layout(
+        Field('name'),
+        PrependedText('value', 'R$'),
+        AppendedText('email', '@'),
+        Field('date_time'),
+        Field('father_example'),
+        Field('date'),
+        Field('time'),
+        Field('observation'),
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.form_method = "post"
+        self.form_class = "form-inline"
+        self.field_template = 'bootstrap3/layout/inline_field.html'
+        self.layout = self.layout
