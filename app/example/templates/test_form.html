@@ -7,6 +7,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Example Form</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     {% bootstrap_css %}
 </head>
 
@@ -16,9 +18,10 @@
             <div class="col-md-6 col-lg-6 col-sm-12">
                 <h3 class="text-center">Crispy Example Form</h3>
                 {% crispy crispy_form crispy_form.helper %}
+                {% comment %}
                 <hr>
                 <h3 class="text-center">Crispy Example FormSet</h3>
-                {% crispy crispy_form_set crispy_form_set_helper %}
+                {% crispy crispy_form_set crispy_form_set_helper %} {% endcomment %}
             </div>
             <div class="col-md-6 col-lg-6 col-sm-12">
                 <h3 class="text-center">Simple Example Form</h3>

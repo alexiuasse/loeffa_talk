@@ -1,12 +1,20 @@
 from django import forms
+from django.forms.widgets import TextInput
 from django.utils.translation import gettext as _
 
 from django.forms.models import modelformset_factory
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Row, Field, Submit, Button
+from crispy_forms.layout import HTML, Layout, Row, Field, Submit, Button
 from crispy_forms.bootstrap import PrependedText, AppendedText, FormActions
+from django_select2 import forms as s2forms
 
 from .models import Example
+
+
+class FatherExampleWidget(s2forms.ModelSelect2Widget):
+    search_fields = [
+        "name__icontains",
+    ]
 
 
 class AdminExampleForm(forms.ModelForm):
@@ -34,6 +42,7 @@ class SimpleExampleForm(forms.ModelForm):
             'date': forms.TextInput(attrs={'type': 'date'}),
             'time': forms.TextInput(attrs={'type': 'time'}),
             'observation': forms.Textarea(attrs={'rows': '3'}),
+            'father_example': FatherExampleWidget(attrs={'data-width': '100%'}),
         }
 
     def clean_value(self):
@@ -73,6 +82,7 @@ class AdminCrispyExampleForm(forms.ModelForm):
             # 'date': forms.TextInput(attrs={'type': 'date'}),
             # 'time': forms.TextInput(attrs={'type': 'time'}),
             'observation': forms.Textarea(attrs={'rows': '3'}),
+            'father_example': FatherExampleWidget(attrs={'data-width': '100%'}),
         }
 
     def clean_value(self):
@@ -88,6 +98,7 @@ class CrispyExampleForm(forms.ModelForm):
     prefix = "crispyExampleForm"
 
     layout = Layout(
+        HTML("<p class='text-danger'> Usuário {{ request.user }} </p>"),
         Field('name'),
         PrependedText('value', 'R$'),
         AppendedText('email', '@'),
@@ -118,6 +129,7 @@ class CrispyExampleForm(forms.ModelForm):
             'date': forms.TextInput(attrs={'type': 'date'}),
             'time': forms.TextInput(attrs={'type': 'time'}),
             'observation': forms.Textarea(attrs={'rows': '3'}),
+            'father_example': FatherExampleWidget(attrs={'data-width': '100%'}),
         }
 
     def clean_value(self):
@@ -142,12 +154,11 @@ class CrispyExampleFormsetHelper(FormHelper):
         Field('father_example'),
         Field('date'),
         Field('time'),
-        Field('observation'),
+        Field('observation', rows=2),
     )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.form_method = "post"
-        self.form_class = "form-inline"
-        self.field_template = 'bootstrap3/layout/inline_field.html'
+        self.form_class = "form-control"
         self.layout = self.layout
